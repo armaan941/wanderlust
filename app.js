@@ -7,7 +7,7 @@ const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
 const session = require("express-session");
-const MongoStore = require("connect-mongo");
+const MongoDBStore = require("connect-mongodb-session")(session);
 const flash = require("connect-flash");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
@@ -42,12 +42,13 @@ async function main() {
   await mongoose.connect(dbUrl);
 }
 
-const store = MongoStore.create({
-  mongoUrl: dbUrl,
-  crypto: {
-    secret: "mysupersecretcode",
-  },
-  touchAfter: 24 * 3600,
+const store = new MongoDBStore({
+  uri: dbUrl,
+  collection: "sessions",
+});
+
+store.on("error", function (error) {
+  console.log(error);
 });
 
 const sessionOptions = {

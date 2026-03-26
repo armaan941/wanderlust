@@ -1,62 +1,90 @@
-let locationCircle;
+mapboxgl.accessToken = mapToken;
 
-var map = L.map("map", { zoomControl: true, scrollWheelZoom: false }).setView(
-  coordinates,
-  9,
-);
-L.tileLayer(
-  `https://tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=${mapToken}`,
-  {
-    attribution:
-      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  },
-).addTo(map);
-
-const customDivIcon = L.divIcon({
-  className: "custom-marker",
-  html: `<div style="
-      width: 18px;
-      height: 18px;
-      background: #ff385c;
-      border: 3px solid white;
-      border-radius: 50%;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.25);
-      cursor: pointer;
-    "></div>`,
-  iconSize: [18, 18],
-  iconAnchor: [9, 9],
+const map = new mapboxgl.Map({
+  container: "map",
+  center: coordinates, // [lng, lat]
+  zoom: 9,
 });
 
-const marker = L.marker(coordinates, { icon: customDivIcon }).addTo(map);
+map.addControl(new mapboxgl.NavigationControl());
 
-marker.bindPopup(`
-    <div style="font-family: Arial, sans-serif;">
-      <h6 style="margin: 0; font-size: 15px;">${displayTitle}</h6>
-      <p style="margin: 4px 0 0; font-size: 13px; color: #555;">
-        ${displayLocation}
-      </p>
-    </div>
-  `);
+const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+  <div style="font-family: Arial, sans-serif;">
+    <h6 style="margin: 0; font-size: 15px;">${displayTitle}</h6>
+    <p style="margin: 4px 0 0; font-size: 13px; color: #555;">
+      ${displayLocation}
+    </p>
+  </div>
+`);
 
-marker.on("click", function () {
-  map.flyTo(coordinates, 16, {
-    animate: true,
-    duration: 1.5,
+const markerElement = document.createElement("div");
+markerElement.style.width = "18px";
+markerElement.style.height = "18px";
+markerElement.style.background = "#ff385c";
+markerElement.style.border = "3px solid white";
+markerElement.style.borderRadius = "50%";
+markerElement.style.boxShadow = "0 2px 10px rgba(0,0,0,0.25)";
+markerElement.style.cursor = "pointer";
+markerElement.style.pointerEvents = "auto";
+
+const marker = new mapboxgl.Marker(markerElement)
+  .setLngLat(coordinates)
+  .setPopup(popup)
+  .addTo(map);
+
+markerElement.addEventListener("click", (e) => {
+  e.stopPropagation();
+
+  map.flyTo({
+    center: coordinates,
+    zoom: 14,
+    speed: 1.2,
+    curve: 1.5,
+    essential: true,
   });
 
-  map.once("moveend", function () {
-    marker.openPopup();
+  map.once("moveend", () => {
+    popup.setLngLat(coordinates).addTo(map);
 
-    if (locationCircle) {
-      map.removeLayer(locationCircle);
+    if (map.getSource("location-circle")) {
+      map.removeLayer("location-circle-fill");
+      map.removeLayer("location-circle-outline");
+      map.removeSource("location-circle");
     }
 
-    locationCircle = L.circle(coordinates, {
-      radius: 200, // meters
-      color: "#ff385c",
-      fillColor: "#ff385c",
-      fillOpacity: 0.15,
-      weight: 1.5,
-    }).addTo(map);
+    map.addSource("location-circle", {
+      type: "geojson",
+      data: {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: coordinates,
+        },
+      },
+    });
+
+    map.addLayer({
+      id: "location-circle-fill",
+      type: "circle",
+      source: "location-circle",
+      paint: {
+        "circle-radius": 100,
+        "circle-color": "#ff385c",
+        "circle-opacity": 0.15,
+      },
+    });
+
+    map.addLayer({
+      id: "location-circle-outline",
+      type: "circle",
+      source: "location-circle",
+      paint: {
+        "circle-radius": 100,
+        "circle-color": "#ff385c",
+        "circle-opacity": 0.4,
+        "circle-stroke-width": 2,
+        "circle-stroke-color": "#ff385c",
+      },
+    });
   });
 });
