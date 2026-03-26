@@ -7,7 +7,6 @@ const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
 const session = require("express-session");
-const MongoDBStore = require("connect-mongodb-session")(session);
 const flash = require("connect-flash");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
@@ -42,24 +41,17 @@ async function main() {
   await mongoose.connect(dbUrl);
 }
 
-const store = new MongoDBStore({
-  uri: dbUrl,
-  collection: "sessions",
-});
-
-store.on("error", function (error) {
-  console.log(error);
-});
+app.set("trust proxy", 1);
 
 const sessionOptions = {
-  store,
-  secret: "mysupersecretcode",
+  secret: process.env.SECRET || "mysupersecretcode",
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7,
     httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 1000 * 60 * 60 * 24 * 7,
   },
 };
 
