@@ -7,6 +7,7 @@ const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
@@ -19,7 +20,8 @@ const listingsRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const dbUrl = process.env.ATLASDB_URL;
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -37,10 +39,23 @@ main()
   });
 
 async function main() {
-  await mongoose.connect(MONGO_URL);
+  await mongoose.connect(dbUrl);
 }
 
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  crypto: {
+    secret: "mysupersecretcode",
+  },
+  touchAfter: 24 * 3600,
+});
+
+store.on("error", (err) => {
+  console.log("ERROR IN MONGO SESSION STORE", err);
+});
+
 const sessionOptions = {
+  store,
   secret: "mysupersecretcode",
   resave: false,
   saveUninitialized: true,
@@ -51,9 +66,9 @@ const sessionOptions = {
   },
 };
 
-app.get("/", (req, res) => {
-  res.send("This is the root page!");
-});
+// app.get("/", (req, res) => {
+//   res.send("This is the root page!");
+// });
 
 app.use(session(sessionOptions));
 app.use(flash());
