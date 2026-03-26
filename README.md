@@ -2,7 +2,7 @@
 
 A full-stack travel listing web application inspired by platforms like Airbnb, where users can explore destinations, create their own stay listings, upload images, and leave reviews.
 
-🔗 **Live Demo:** [Add your deployed link here](https://wanderlust-6co7.onrender.com/listings)
+🔗 **Live Demo:** [WanderLust Live](https://wanderlust-6co7.onrender.com/listings)
 📂 **GitHub Repository:** [WanderLust](https://github.com/armaan941/wanderlust)
 
 ---
@@ -96,9 +96,6 @@ WanderLust/
 
 ## Listing Page
 ![Listing Page](./screenshots/listing-page.png)
-
-## Show Listing Page
-![Show Listing Page](./screenshots/show-page.png)
 
 ## Create Listing
 ![Create Listing](./screenshots/create-listing.png)
