@@ -1,72 +1,93 @@
 # 🌍 WanderLust
 
-A full-stack travel listing web application inspired by platforms like Airbnb, where users can explore destinations, create their own stay listings, upload images, and leave reviews.
+**WanderLust** is a full-stack travel stay listing web application inspired by platforms like **Airbnb**.  
+It allows users to explore travel destinations, create and manage property listings, upload images, and share reviews.
 
-🔗 **Live Demo:** [WanderLust Live](https://wanderlust-6co7.onrender.com/listings)
+🔗 **Live Demo:** [WanderLust Live](https://wanderlust-armaan.vercel.app/listings)  
 📂 **GitHub Repository:** [WanderLust](https://github.com/armaan941/wanderlust)
+
+---
+
+## 📌 Overview
+
+WanderLust is designed to simulate a real-world travel accommodation platform where users can:
+
+- Browse and explore stay listings
+- Create and manage their own listings
+- Upload listing images
+- Leave reviews and ratings
+- Experience secure authentication and protected actions
+
+This project demonstrates key full-stack development concepts such as **CRUD operations, MVC architecture, authentication, authorization, cloud storage integration, and deployment**.
 
 ---
 
 ## ✨ Features
 
-* 🔐 User Authentication (Signup / Login / Logout)
-* 🏠 Create, Edit, and Delete Listings
-* 🖼️ Image Upload with Cloudinary
-* ⭐ Add and Delete Reviews
-* 📍 Location-based stay listings
-* 💬 Flash messages for user feedback
-* 🛡️ Protected routes with authentication & authorization
-* 📱 Responsive design for multiple devices
-
----
-
-## 🚀 Live Preview
-
-Once your project is deployed, replace the placeholder below with your real link:
-
-```md
-🔗 **Live Demo:** [WanderLust Live](https://wanderlust-6co7.onrender.com/listings)
-```
+- 🔐 **User Authentication**
+  - Signup, Login, Logout
+- 🏠 **Listing Management**
+  - Create, Edit, Delete Listings
+- 🖼️ **Image Upload**
+  - Upload and manage listing images using Cloudinary
+- ⭐ **Review System**
+  - Add and delete reviews for listings
+- 📍 **Location-Based Listings**
+  - Display destination and location information
+- 💬 **Flash Messages**
+  - User-friendly success and error notifications
+- 🛡️ **Authorization**
+  - Only owners can edit/delete their listings
+  - Only review authors can delete their reviews
+- 📱 **Responsive UI**
+  - Optimized for desktop and mobile devices
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### **Frontend**
-
-* HTML
-* CSS
-* Bootstrap
-* EJS
+- HTML
+- CSS
+- Bootstrap
+- EJS
 
 ### **Backend**
-
-* Node.js
-* Express.js
+- Node.js
+- Express.js
 
 ### **Database**
+- MongoDB Atlas
+- Mongoose
 
-* MongoDB
-* Mongoose
-
-### **Authentication**
-
-* Passport.js
-* Passport Local
-* Express Session
+### **Authentication & Security**
+- Passport.js
+- Passport Local
+- Express Session
 
 ### **File Upload & Media**
-
-* Cloudinary
-* Multer
-* Multer Storage Cloudinary
+- Cloudinary
+- Multer
+- Multer Storage Cloudinary
 
 ### **Validation & Utilities**
+- Joi
+- Method Override
+- Connect Flash
+- Dotenv
 
-* Joi
-* Method Override
-* Connect Flash
-* Dotenv
+---
+
+## 🧱 Project Architecture
+
+This project follows the **MVC (Model-View-Controller)** architecture:
+
+- **Models** → Handle database structure and logic
+- **Views** → Render dynamic frontend pages using EJS
+- **Controllers** → Manage request handling and business logic
+- **Routes** → Define API and page endpoints
+
+This structure improves **code organization, scalability, and maintainability**.
 
 ---
 
@@ -74,20 +95,19 @@ Once your project is deployed, replace the placeholder below with your real link
 
 ```bash
 WanderLust/
-│── controllers/
-│── models/
-│── routes/
-│── views/
-│── public/
-│── utils/
-│── app.js
-│── cloudConfig.js
-│── schema.js
+│── controllers/         # Route logic and request handling
+│── models/              # Mongoose schemas and database models
+│── routes/              # Express route definitions
+│── views/               # EJS templates
+│── public/              # Static assets (CSS, JS, images)
+│── utils/               # Utility functions and error handlers
+│── init/                # Database initialization / seed files
+│── app.js               # Main application entry point
+│── cloudConfig.js       # Cloudinary configuration
+│── middleware.js        # Custom middleware functions
+│── schema.js            # Joi validation schemas
 │── package.json
 │── README.md
-```
-
----
 
 ## 📸 Screenshots
 
