@@ -108,6 +108,7 @@ WanderLust/
 │── schema.js            # Joi validation schemas
 │── package.json
 │── README.md
+```
 
 ## 📸 Screenshots
 
